@@ -74,16 +74,20 @@ def query_device_last_data(secret: str, token: str, pn: str, sn: str, devcode: s
 
 
 def flatten_reading(dat: dict) -> dict:
-    """Turn the {title:[...], row:[{field:[...]}]} response into a simple dict."""
-    titles = [t.get("title", "") for t in dat.get("title", [])]
-    rows = dat.get("row", [])
-    if not rows:
-        return {}
-    fields = rows[0].get("field", [])
+    """
+    Real ShineMonitor 'querySPDeviceLastData' response shape:
+    { "pars": { "gd_": [{id,par,val,unit}, ...], "bt_": [...], "bc_": [...], ... } }
+    Flatten every {par: val (+unit)} pair into a single dict, keyed by the
+    human-readable 'par' label.
+    """
     reading = {}
-    for i, title in enumerate(titles):
-        if i < len(fields):
-            reading[title] = fields[i]
+    pars = dat.get("pars", {})
+    for group in pars.values():
+        for item in group:
+            label = item.get("par", item.get("id", "unknown"))
+            val = item.get("val", "")
+            unit = item.get("unit", "")
+            reading[label] = f"{val} {unit}".strip()
     return reading
 
 
