@@ -5,124 +5,279 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SolarX by Osman</title>
 <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0f172a" />
+<meta name="theme-color" content="#eef4fb" />
 <style>
   * { box-sizing: border-box; }
+  :root {
+    --blue: #2563eb;
+    --blue-dark: #1d4ed8;
+    --orange: #f59e0b;
+    --green: #16a34a;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --card: #ffffff;
+    --bg: #eef4fb;
+  }
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(160deg, #0f172a, #1e293b);
-    color: #f1f5f9;
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    padding: 24px 16px 60px;
+    padding-bottom: 90px;
   }
-  header { text-align: center; margin-bottom: 28px; }
-  header h1 {
-    font-size: 22px;
-    margin: 0 0 4px;
-    background: linear-gradient(90deg, #fbbf24, #f97316);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  header p { margin: 0; color: #94a3b8; font-size: 13px; }
 
-  .card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 16px;
-    backdrop-filter: blur(6px);
+  header {
+    padding: 20px 18px 26px;
+    background: linear-gradient(180deg, #dbe9fb, #eef4fb 80%);
   }
-  .mode-card { text-align: center; }
-  .mode-badge {
-    display: inline-block;
-    padding: 10px 22px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 18px;
-    margin: 8px 0;
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 19px; color: var(--blue-dark); }
+  .brand .bolt { color: var(--orange); font-size: 22px; }
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; border-radius: 999px; padding: 7px 14px;
+    font-size: 13px; color: var(--muted); box-shadow: 0 1px 3px rgba(15,23,42,.06);
   }
-  .mode-line { background: #16a34a33; color: #4ade80; border: 1px solid #4ade8055; }
-  .mode-battery { background: #f59e0b33; color: #fbbf24; border: 1px solid #fbbf2455; }
-  .mode-unknown { background: #64748b33; color: #cbd5e1; border: 1px solid #cbd5e155; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .dot.off { background: #ef4444; }
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .stat { background: rgba(255,255,255,0.04); border-radius: 14px; padding: 14px; }
-  .stat .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; }
-  .stat .value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+  h1.title { font-size: 30px; margin: 4px 0 2px; letter-spacing: -0.02em; }
+  .subtitle { color: var(--muted); font-size: 14px; margin: 0; }
 
-  .updated { text-align: center; color: #64748b; font-size: 12px; margin-top: 18px; }
-  .refresh-btn {
-    display: block;
-    margin: 18px auto 0;
-    background: #f97316;
-    color: #0f172a;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 14px;
+  .flow-card {
+    background: var(--card);
+    border-radius: 24px;
+    margin: 0 14px;
+    padding: 30px 18px 22px;
+    box-shadow: 0 8px 24px rgba(15,23,42,.06);
+    position: relative;
   }
-  .loading { text-align: center; color: #94a3b8; padding: 40px 0; }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr;
+    align-items: center;
+    row-gap: 14px;
+  }
+  .node { text-align: center; }
+  .node .icon-circle {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin: 0 auto 8px;
+  }
+  .node .label { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .node .value { font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .value.blue { color: var(--blue); }
+  .value.orange { color: var(--orange); }
+  .value.green { color: var(--green); }
+
+  .center-col { grid-column: 1 / -1; display: flex; justify-content: center; margin: 6px 0; }
+  .inverter-box {
+    width: 150px;
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+    border-radius: 14px;
+    padding: 12px 10px 14px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(15,23,42,.25);
+  }
+  .inverter-box .ilogo { font-size: 11px; color: #fbbf24; font-weight: 700; letter-spacing: .03em; margin-bottom: 6px; }
+  .inverter-box .model { font-size: 12px; font-weight: 700; }
+  .inverter-box .screen {
+    margin-top: 8px; background: #1e40af; border-radius: 6px; height: 26px;
+    display: flex; align-items: center; justify-content: center; font-size: 11px; color: #bfdbfe;
+  }
+
+  .battery-row { grid-column: 1/-1; display: flex; justify-content: center; margin-top: 4px; }
+
+  .stats-row {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 10px; margin: 16px 14px 0;
+  }
+  .stat-card {
+    background: var(--card); border-radius: 16px; padding: 14px;
+    box-shadow: 0 4px 14px rgba(15,23,42,.05);
+  }
+  .stat-card .s-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .stat-card .s-value { font-size: 17px; font-weight: 700; }
+
+  .overview-card {
+    background: var(--card); border-radius: 20px; margin: 16px 14px 0; padding: 18px;
+    box-shadow: 0 4px 14px rgba(15,23,42,.05);
+  }
+  .overview-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .overview-head .oh-title { font-weight: 700; font-size: 16px; }
+  .overview-head .oh-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .online-tag { display:flex; align-items:center; gap:5px; font-size:12px; color: var(--green); font-weight:600; }
+
+  .overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .ov-item .ov-label { font-size: 12px; color: var(--muted); }
+  .ov-item .ov-value { font-size: 17px; font-weight: 700; margin-top: 2px; }
+
+  .updated-note { text-align: center; color: #94a3b8; font-size: 12px; margin: 16px 0 0; }
+
+  nav.bottom {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 1px solid #e2e8f0;
+    display: flex; justify-content: space-around; padding: 10px 0 14px;
+  }
+  nav.bottom button {
+    background: none; border: none; display: flex; flex-direction: column; align-items: center;
+    gap: 3px; font-size: 11px; color: var(--muted); font-family: inherit;
+  }
+  nav.bottom button.active { color: var(--blue); }
+  nav.bottom .nav-icon { font-size: 18px; }
+
+  .loading { text-align: center; color: var(--muted); padding: 60px 20px; }
 </style>
 </head>
 <body>
-  <header>
-    <h1>⚡ SolarX <span style="color:#f1f5f9;">by Osman</span></h1>
-    <p>Live inverter monitoring</p>
-  </header>
 
-  <div id="content" class="loading">Loading latest status…</div>
+<header>
+  <div class="topbar">
+    <div class="brand"><span class="bolt">⚡</span> SolarX <span style="color:#0f172a; font-weight:500;">by Osman</span></div>
+    <div class="status-pill"><span class="dot" id="statusDot"></span><span id="statusText">Checking…</span></div>
+  </div>
+  <h1 class="title">Solar Power</h1>
+  <p class="subtitle">Smart Energy System</p>
+</header>
 
-  <button class="refresh-btn" onclick="loadStatus()">Refresh</button>
+<div id="content">
+  <div class="loading">Loading latest status…</div>
+</div>
+
+<nav class="bottom">
+  <button class="active"><span class="nav-icon">🏠</span>Home</button>
+  <button onclick="alert('Coming soon')"><span class="nav-icon">📊</span>Dashboard</button>
+  <button onclick="alert('Coming soon')"><span class="nav-icon">🕑</span>History</button>
+  <button onclick="alert('Coming soon')"><span class="nav-icon">🔔</span>Alerts</button>
+  <button onclick="alert('Coming soon')"><span class="nav-icon">⚙️</span>Settings</button>
+</nav>
 
 <script>
+function num(v) {
+  if (!v) return null;
+  const m = String(v).match(/-?\d+(\.\d+)?/);
+  return m ? parseFloat(m[0]) : null;
+}
+function fmtKW(watts) {
+  if (watts === null) return '—';
+  return (watts / 1000).toFixed(2);
+}
+
 async function loadStatus() {
   const content = document.getElementById('content');
-  content.className = 'loading';
-  content.textContent = 'Loading latest status…';
   try {
     const res = await fetch('status.json?t=' + Date.now());
     const data = await res.json();
     render(data);
   } catch (e) {
-    content.className = 'loading';
-    content.textContent = 'Could not load status yet — check back after the first run.';
+    content.innerHTML = '<div class="loading">Could not load status yet — check back shortly.</div>';
   }
 }
 
 function render(data) {
   const content = document.getElementById('content');
-  const mode = (data.mode_value || '').toLowerCase();
-  let modeClass = 'mode-unknown';
-  if (mode.includes('line') || mode.includes('grid') || mode.includes('mains')) modeClass = 'mode-line';
-  else if (mode.includes('batt') || mode.includes('inv')) modeClass = 'mode-battery';
-
-  let statsHtml = '';
   const reading = data.reading || {};
-  const keysToShow = Object.keys(reading).slice(0, 8);
-  keysToShow.forEach(k => {
-    statsHtml += `<div class="stat"><div class="label">${k}</div><div class="value">${reading[k]}</div></div>`;
-  });
 
-  content.className = '';
+  const isOnline = !!data.mode_value;
+  document.getElementById('statusDot').className = 'dot' + (isOnline ? '' : ' off');
+  document.getElementById('statusText').textContent = isOnline ? 'Normal' : 'Offline';
+
+  const pvPower = num(reading['PV1 Charging Power']);
+  const loadPower = num(reading['AC Output Active Power']);
+  const battPct = reading['Battery Capacity'] || '—';
+  const battV = reading['Battery Voltage'] || '';
+  const battA = num(reading['Battery Charging Current']) || num(reading['Battery Discharge Current']) || 0;
+
+  const gridV = reading['Grid Voltage'] || '—';
+  const outV = reading['AC Output Voltage'] || '—';
+  const freq = reading['AC Output Frequency'] || '—';
+  const loadPct = reading['Output Load Percent'] || '—';
+  const apparent = reading['AC Output Apparent Power'] || '—';
+
   content.innerHTML = `
-    <div class="card mode-card">
-      <div style="color:#94a3b8; font-size:13px;">Current Mode</div>
-      <div class="mode-badge ${modeClass}">${data.mode_value || 'Unknown'}</div>
-      ${data.battery_value ? `<div style="color:#94a3b8; font-size:13px; margin-top:6px;">Battery: <b style="color:#f1f5f9;">${data.battery_value}</b></div>` : ''}
+    <div class="flow-card">
+      <div class="flow-grid">
+        <div class="node" style="grid-column: 2/3;">
+          <div class="icon-circle">☀️</div>
+          <div class="label">Solar Panel</div>
+          <div class="value green">${fmtKW(pvPower)} kW</div>
+        </div>
+
+        <div class="node" style="grid-column: 1/2;">
+          <div class="icon-circle">⚡</div>
+          <div class="label">Mode</div>
+          <div class="value blue" style="font-size:13px;">${data.mode_value || '—'}</div>
+        </div>
+
+        <div class="node" style="grid-column: 3/4;">
+          <div class="icon-circle">🏠</div>
+          <div class="label">Home Load</div>
+          <div class="value orange">${fmtKW(loadPower)} kW</div>
+        </div>
+
+        <div class="center-col">
+          <div class="inverter-box">
+            <div class="ilogo">LUMINEY</div>
+            <div class="model">Elecra PV4000</div>
+            <div class="screen">${data.mode_value || '—'}</div>
+          </div>
+        </div>
+
+        <div class="battery-row">
+          <div class="node">
+            <div class="icon-circle">🔋</div>
+            <div class="label">Battery</div>
+            <div class="value green">${battPct}</div>
+            <div style="font-size:12px; color:#64748b;">${battV}${battV ? ' • ' : ''}${battA} A</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="grid">${statsHtml}</div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="s-label">Load %</div>
+        <div class="s-value">${loadPct}</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Apparent Power</div>
+        <div class="s-value">${apparent}</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Grid Voltage</div>
+        <div class="s-value">${gridV}</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-label">Frequency</div>
+        <div class="s-value">${freq}</div>
+      </div>
     </div>
-    <div class="updated">Last updated: ${data.updated_at || '—'}</div>
+
+    <div class="overview-card">
+      <div class="overview-head">
+        <div>
+          <div class="oh-title">Inverter Overview</div>
+          <div class="oh-sub">Luminey Elecra PV4000</div>
+        </div>
+        <div class="online-tag"><span class="dot"></span>${isOnline ? 'Online' : 'Offline'}</div>
+      </div>
+      <div class="overview-grid">
+        <div class="ov-item"><div class="ov-label">Output Power</div><div class="ov-value">${fmtKW(loadPower)} kW</div></div>
+        <div class="ov-item"><div class="ov-label">Input Voltage</div><div class="ov-value">${gridV}</div></div>
+        <div class="ov-item"><div class="ov-label">Output Voltage</div><div class="ov-value">${outV}</div></div>
+        <div class="ov-item"><div class="ov-label">Frequency</div><div class="ov-value">${freq}</div></div>
+      </div>
+    </div>
+
+    <div class="updated-note">Last updated: ${data.updated_at || '—'}</div>
   `;
 }
 
 loadStatus();
-setInterval(loadStatus, 60000); // auto-refresh every minute while app is open
+setInterval(loadStatus, 60000);
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
