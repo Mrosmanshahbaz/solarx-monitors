@@ -133,8 +133,15 @@ def main():
         reading = flatten_reading(dat)
     except Exception as e:
         print(f"ERROR fetching data: {e}", file=sys.stderr)
-        # Don't crash the whole workflow - just skip this run
+        # write the error into status.json too so it's visible without digging through logs
+        with open(state_path, "w") as f:
+            json.dump({"updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                       "error": str(e)}, f, indent=2, ensure_ascii=False)
         sys.exit(0)
+
+    # DEBUG: always keep the raw server response so we can see exactly what
+    # came back if 'reading' ends up empty (field names differ by firmware).
+    debug_raw = dat
 
     # try to find the mode / battery fields (title wording can vary by firmware)
     mode_title, mode_val = find_field(reading, ["mode", "work mode", "operation"])
@@ -159,6 +166,7 @@ def main():
         "battery_title": batt_title,
         "battery_value": batt_val,
         "reading": reading,
+        "debug_raw": debug_raw if not reading else None,
     }
 
     with open(state_path, "w") as f:
