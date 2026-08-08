@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SolarX by Osman</title>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0f172a" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(160deg, #0f172a, #1e293b);
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+    background: linear-gradient(90deg, #fbbf24, #f97316);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  header p { margin: 0; color: #94a3b8; font-size: 13px; }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(6px);
+  }
+  .mode-card { text-align: center; }
+  .mode-badge {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 8px 0;
+  }
+  .mode-line { background: #16a34a33; color: #4ade80; border: 1px solid #4ade8055; }
+  .mode-battery { background: #f59e0b33; color: #fbbf24; border: 1px solid #fbbf2455; }
+  .mode-unknown { background: #64748b33; color: #cbd5e1; border: 1px solid #cbd5e155; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: rgba(255,255,255,0.04); border-radius: 14px; padding: 14px; }
+  .stat .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: .04em; }
+  .stat .value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+
+  .updated { text-align: center; color: #64748b; font-size: 12px; margin-top: 18px; }
+  .refresh-btn {
+    display: block;
+    margin: 18px auto 0;
+    background: #f97316;
+    color: #0f172a;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .loading { text-align: center; color: #94a3b8; padding: 40px 0; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>⚡ SolarX <span style="color:#f1f5f9;">by Osman</span></h1>
+    <p>Live inverter monitoring</p>
+  </header>
+
+  <div id="content" class="loading">Loading latest status…</div>
+
+  <button class="refresh-btn" onclick="loadStatus()">Refresh</button>
+
+<script>
+async function loadStatus() {
+  const content = document.getElementById('content');
+  content.className = 'loading';
+  content.textContent = 'Loading latest status…';
+  try {
+    const res = await fetch('status.json?t=' + Date.now());
+    const data = await res.json();
+    render(data);
+  } catch (e) {
+    content.className = 'loading';
+    content.textContent = 'Could not load status yet — check back after the first run.';
+  }
+}
+
+function render(data) {
+  const content = document.getElementById('content');
+  const mode = (data.mode_value || '').toLowerCase();
+  let modeClass = 'mode-unknown';
+  if (mode.includes('line') || mode.includes('grid') || mode.includes('mains')) modeClass = 'mode-line';
+  else if (mode.includes('batt') || mode.includes('inv')) modeClass = 'mode-battery';
+
+  let statsHtml = '';
+  const reading = data.reading || {};
+  const keysToShow = Object.keys(reading).slice(0, 8);
+  keysToShow.forEach(k => {
+    statsHtml += `<div class="stat"><div class="label">${k}</div><div class="value">${reading[k]}</div></div>`;
+  });
+
+  content.className = '';
+  content.innerHTML = `
+    <div class="card mode-card">
+      <div style="color:#94a3b8; font-size:13px;">Current Mode</div>
+      <div class="mode-badge ${modeClass}">${data.mode_value || 'Unknown'}</div>
+      ${data.battery_value ? `<div style="color:#94a3b8; font-size:13px; margin-top:6px;">Battery: <b style="color:#f1f5f9;">${data.battery_value}</b></div>` : ''}
+    </div>
+    <div class="card">
+      <div class="grid">${statsHtml}</div>
+    </div>
+    <div class="updated">Last updated: ${data.updated_at || '—'}</div>
+  `;
+}
+
+loadStatus();
+setInterval(loadStatus, 60000); // auto-refresh every minute while app is open
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
