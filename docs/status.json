@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-10 11:58:24",
+  "updated_at": "2026-08-10 11:59:17",
   "mode_title": "Model",
   "mode_value": "Line Mode",
   "battery_title": "Battery Capacity",
@@ -215,25 +215,25 @@
       {
         "par": "gd_vol",
         "name": "Grid Voltage",
-        "val": "234.6",
+        "val": "233.3",
         "unit": "V"
       },
       {
         "par": "gd_fre",
         "name": "Grid Frequency",
-        "val": "50.0",
+        "val": "49.8",
         "unit": "Hz"
       },
       {
         "par": "bc_vol",
         "name": "AC Output Voltage",
-        "val": "234.6",
+        "val": "233.3",
         "unit": "V"
       },
       {
         "par": "bc_pow",
         "name": "AC Output Active Power",
-        "val": "375",
+        "val": "371",
         "unit": "W"
       },
       {
@@ -251,7 +251,7 @@
       {
         "par": "bt_vol",
         "name": "Battery Voltage",
-        "val": "27.1",
+        "val": "27.0",
         "unit": "V"
       },
       {
