@@ -73,6 +73,27 @@ def query_device_last_data(secret: str, token: str, pn: str, sn: str, devcode: s
     return result["dat"]
 
 
+def query_device_flow_power(secret: str, token: str, pn: str, sn: str, devcode: str, devaddr: str):
+    """
+    This is the endpoint the real WatchPower app polls every ~10-15s for its
+    live status/flow screen - fresher than querySPDeviceLastData.
+    """
+    salt = str(int(time.time() * 1000))
+    action = (
+        "&action=queryDeviceFlowPower"
+        + "&pn=" + pn
+        + "&sn=" + sn
+        + "&devaddr=" + devaddr
+        + "&devcode=" + devcode
+        + APP_SUFFIX
+    )
+    sign = sha1(salt + secret + token + action)
+    result = api_call(action, salt, sign, token)
+    if result.get("err") != 0:
+        raise RuntimeError(f"FlowPower query failed: {result}")
+    return result["dat"]
+
+
 def flatten_reading(dat: dict) -> dict:
     """
     Real ShineMonitor 'querySPDeviceLastData' response shape:
@@ -135,6 +156,21 @@ def main():
         secret, token = auth(usr, pwd, company_key)
         dat = query_device_last_data(secret, token, pn, sn, devcode, devaddr)
         reading = flatten_reading(dat)
+
+        # also pull the fresher "live flow" endpoint the app itself polls,
+        # and merge it in (it wins on overlapping keys since it's more current)
+        flow_dat = None
+        try:
+            flow_dat = query_device_flow_power(secret, token, pn, sn, devcode, devaddr)
+            if isinstance(flow_dat, dict) and "pars" in flow_dat:
+                flow_reading = flatten_reading(flow_dat)
+            elif isinstance(flow_dat, dict):
+                flow_reading = {k: str(v) for k, v in flow_dat.items()}
+            else:
+                flow_reading = {}
+            reading.update(flow_reading)
+        except Exception as e2:
+            print(f"WARN: flow-power query failed, using snapshot only: {e2}", file=sys.stderr)
     except Exception as e:
         print(f"ERROR fetching data: {e}", file=sys.stderr)
         # write the error into status.json too so it's visible without digging through logs
@@ -143,9 +179,10 @@ def main():
                        "error": str(e)}, f, indent=2, ensure_ascii=False)
         sys.exit(0)
 
-    # DEBUG: always keep the raw server response so we can see exactly what
-    # came back if 'reading' ends up empty (field names differ by firmware).
-    debug_raw = dat
+    # DEBUG: always keep the raw flow-endpoint response too, so if mode
+    # detection ever comes up empty we can see the exact field names and
+    # fix the keyword list without needing a fresh pcap capture.
+    debug_raw = {"snapshot": dat, "flow": flow_dat}
 
     # try to find the mode / battery fields (title wording can vary by firmware)
     mode_title, mode_val = find_field(reading, ["mode", "work mode", "operation"])
@@ -170,7 +207,7 @@ def main():
         "battery_title": batt_title,
         "battery_value": batt_val,
         "reading": reading,
-        "debug_raw": debug_raw if not reading else None,
+        "debug_raw": debug_raw,
     }
 
     with open(state_path, "w") as f:
