@@ -1,9 +1,9 @@
 {
-  "updated_at": "2026-08-10 15:56:26",
+  "updated_at": "2026-08-10 15:57:24",
   "mode_title": "Model",
   "mode_value": "Battery Mode",
   "battery_title": "Battery Capacity",
-  "battery_value": "72 %",
+  "battery_value": "70 %",
   "reading": {
     "Grid Rating Voltage": "230.0 V",
     "Grid Rating Current": "13.0 A",
@@ -21,21 +21,21 @@
     "Grid Frequency": "0.0 Hz",
     "PV1 Input Voltage": "0.0 V",
     "PV1 Charging Power": "0 W",
-    "Battery Voltage": "24.6 V",
-    "Battery Capacity": "72 %",
+    "Battery Voltage": "24.5 V",
+    "Battery Capacity": "70 %",
     "Battery Charging Current": "0 A",
     "Battery Discharge Current": "11 A",
-    "AC Output Voltage": "229.5 V",
+    "AC Output Voltage": "230.4 V",
     "AC Output Frequency": "50.0 Hz",
-    "AC Output Apparent Power": "206 VA",
-    "AC Output Active Power": "196 W",
+    "AC Output Apparent Power": "207 VA",
+    "AC Output Active Power": "195 W",
     "Output Load Percent": "6 %",
     "Model": "Battery Mode",
     "Load Status": "Load on"
   },
   "debug_raw": {
     "snapshot": {
-      "gts": "1786366335917",
+      "gts": "1786366626803",
       "pars": {
         "gd_": [
           {
@@ -140,13 +140,13 @@
           {
             "id": "bt_battery_voltage",
             "par": "Battery Voltage",
-            "val": "24.6",
+            "val": "24.5",
             "unit": "V"
           },
           {
             "id": "bt_battery_capacity",
             "par": "Battery Capacity",
-            "val": "72",
+            "val": "70",
             "unit": "%"
           },
           {
@@ -164,7 +164,7 @@
           {
             "id": "bt_ac_output_voltage",
             "par": "AC Output Voltage",
-            "val": "229.5",
+            "val": "230.4",
             "unit": "V"
           },
           {
@@ -176,13 +176,13 @@
           {
             "id": "bt_ac_output_apparent_power",
             "par": "AC Output Apparent Power",
-            "val": "206",
+            "val": "207",
             "unit": "VA"
           },
           {
             "id": "bt_load_active_power_sole",
             "par": "AC Output Active Power",
-            "val": "196",
+            "val": "195",
             "unit": "W"
           },
           {
@@ -227,13 +227,13 @@
       {
         "par": "bc_vol",
         "name": "AC Output Voltage",
-        "val": "229.5",
+        "val": "230.4",
         "unit": "V"
       },
       {
         "par": "bc_pow",
         "name": "AC Output Active Power",
-        "val": "196",
+        "val": "195",
         "unit": "W"
       },
       {
@@ -245,13 +245,13 @@
       {
         "par": "bt_cap",
         "name": "Battery Capacity",
-        "val": "72",
+        "val": "70",
         "unit": "%"
       },
       {
         "par": "bt_vol",
         "name": "Battery Voltage",
-        "val": "24.6",
+        "val": "24.5",
         "unit": "V"
       },
       {
