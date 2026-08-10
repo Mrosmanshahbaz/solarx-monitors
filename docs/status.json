@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-10 09:23:17",
+  "updated_at": "2026-08-10 09:24:19",
   "mode_title": "Model",
   "mode_value": "Line Mode",
   "battery_title": "Battery Capacity",
@@ -18,7 +18,7 @@
     "Secondary CPU Firmware Version": "00019.20",
     "PV1 Input Current": "0 A",
     "Grid Voltage": "239.5 V",
-    "Grid Frequency": "49.8 Hz",
+    "Grid Frequency": "50.0 Hz",
     "PV1 Input Voltage": "0.0 V",
     "PV1 Charging Power": "0 W",
     "Battery Voltage": "27.0 V",
@@ -26,16 +26,16 @@
     "Battery Charging Current": "0 A",
     "Battery Discharge Current": "0 A",
     "AC Output Voltage": "239.5 V",
-    "AC Output Frequency": "49.8 Hz",
+    "AC Output Frequency": "50.0 Hz",
     "AC Output Apparent Power": "526 VA",
-    "AC Output Active Power": "432 W",
+    "AC Output Active Power": "439 W",
     "Output Load Percent": "17 %",
     "Model": "Line Mode",
     "Load Status": "Load on"
   },
   "debug_raw": {
     "snapshot": {
-      "gts": "1786342712522",
+      "gts": "1786343003532",
       "pars": {
         "gd_": [
           {
@@ -122,7 +122,7 @@
           {
             "id": "bt_grid_frequency",
             "par": "Grid Frequency",
-            "val": "49.8",
+            "val": "50.0",
             "unit": "Hz"
           },
           {
@@ -170,7 +170,7 @@
           {
             "id": "bt_grid_AC_frequency",
             "par": "AC Output Frequency",
-            "val": "49.8",
+            "val": "50.0",
             "unit": "Hz"
           },
           {
@@ -182,7 +182,7 @@
           {
             "id": "bt_load_active_power_sole",
             "par": "AC Output Active Power",
-            "val": "432",
+            "val": "439",
             "unit": "W"
           },
           {
@@ -221,7 +221,7 @@
       {
         "par": "gd_fre",
         "name": "Grid Frequency",
-        "val": "49.8",
+        "val": "50.0",
         "unit": "Hz"
       },
       {
@@ -233,7 +233,7 @@
       {
         "par": "bc_pow",
         "name": "AC Output Active Power",
-        "val": "432",
+        "val": "439",
         "unit": "W"
       },
       {
