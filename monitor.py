@@ -122,6 +122,46 @@ def find_field(reading: dict, keywords):
     return None, None
 
 
+def control_tuya_switch(turn_on: bool):
+    """Turn the Tuya (Smart Life / '2A') switch on or off via Tuya Cloud API."""
+    access_id = os.environ.get("TUYA_ACCESS_ID")
+    access_secret = os.environ.get("TUYA_ACCESS_SECRET")
+    device_id = os.environ.get("TUYA_DEVICE_ID")
+    endpoint = os.environ.get("TUYA_ENDPOINT", "https://openapi.tuyaeu.com")
+
+    if not (access_id and access_secret and device_id):
+        print("Tuya not configured - skipping switch control.", file=sys.stderr)
+        return
+
+    try:
+        from tuya_connector import TuyaOpenAPI
+    except ImportError:
+        print("tuya-connector-python not installed - skipping switch control.", file=sys.stderr)
+        return
+
+    try:
+        openapi = TuyaOpenAPI(endpoint, access_id, access_secret)
+        openapi.connect()
+
+        # figure out the correct DP code for this device (varies by model)
+        switch_code = "switch_1"
+        try:
+            status = openapi.get(f"/v1.0/iot-03/devices/{device_id}/status")
+            codes = [d["code"] for d in status.get("result", [])]
+            for candidate in ("switch_1", "switch", "switch_led"):
+                if candidate in codes:
+                    switch_code = candidate
+                    break
+        except Exception:
+            pass
+
+        commands = {"commands": [{"code": switch_code, "value": turn_on}]}
+        result = openapi.post(f"/v1.0/iot-03/devices/{device_id}/commands", commands)
+        print(f"Tuya switch -> {'ON' if turn_on else 'OFF'}: {result}")
+    except Exception as e:
+        print(f"Tuya control failed: {e}", file=sys.stderr)
+
+
 def send_ntfy(topic: str, title: str, message: str, priority: str = "high"):
     url = f"https://ntfy.sh/{topic}"
     req = urllib.request.Request(
@@ -222,6 +262,12 @@ def main():
             message=f"{prev_mode} -> {mode_val}"
             + (f"\nBattery: {batt_val}" if batt_val else ""),
         )
+        # fridge switch: OFF when we go to Battery Mode, ON when back to Line Mode
+        mode_val_low = (mode_val or "").lower()
+        if "batt" in mode_val_low:
+            control_tuya_switch(turn_on=False)
+        elif "line" in mode_val_low or "grid" in mode_val_low:
+            control_tuya_switch(turn_on=True)
         print(f"Notified: {prev_mode} -> {mode_val}")
     else:
         print(f"No change. mode={mode_val} battery={batt_val}")
