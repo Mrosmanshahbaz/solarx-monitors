@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-11 14:52:25",
+  "updated_at": "2026-08-11 14:53:26",
   "mode_title": "Model",
   "mode_value": "Line Mode",
   "battery_title": "Battery Capacity",
@@ -17,25 +17,25 @@
     "Main CPU Firmware Version": "00047.03",
     "Secondary CPU Firmware Version": "00019.20",
     "PV1 Input Current": "0 A",
-    "Grid Voltage": "237.9 V",
-    "Grid Frequency": "50.2 Hz",
+    "Grid Voltage": "236.8 V",
+    "Grid Frequency": "49.7 Hz",
     "PV1 Input Voltage": "0.0 V",
     "PV1 Charging Power": "0 W",
-    "Battery Voltage": "27.1 V",
+    "Battery Voltage": "27.0 V",
     "Battery Capacity": "100 %",
     "Battery Charging Current": "0 A",
     "Battery Discharge Current": "0 A",
-    "AC Output Voltage": "237.9 V",
-    "AC Output Frequency": "50.2 Hz",
-    "AC Output Apparent Power": "428 VA",
-    "AC Output Active Power": "323 W",
+    "AC Output Voltage": "236.8 V",
+    "AC Output Frequency": "49.7 Hz",
+    "AC Output Apparent Power": "425 VA",
+    "AC Output Active Power": "319 W",
     "Output Load Percent": "14 %",
     "Model": "Line Mode",
     "Load Status": "Load on"
   },
   "debug_raw": {
     "snapshot": {
-      "gts": "1786448880122",
+      "gts": "1786449175316",
       "pars": {
         "gd_": [
           {
@@ -116,13 +116,13 @@
           {
             "id": "bt_grid_voltage",
             "par": "Grid Voltage",
-            "val": "237.9",
+            "val": "236.8",
             "unit": "V"
           },
           {
             "id": "bt_grid_frequency",
             "par": "Grid Frequency",
-            "val": "50.2",
+            "val": "49.7",
             "unit": "Hz"
           },
           {
@@ -140,7 +140,7 @@
           {
             "id": "bt_battery_voltage",
             "par": "Battery Voltage",
-            "val": "27.1",
+            "val": "27.0",
             "unit": "V"
           },
           {
@@ -164,25 +164,25 @@
           {
             "id": "bt_ac_output_voltage",
             "par": "AC Output Voltage",
-            "val": "237.9",
+            "val": "236.8",
             "unit": "V"
           },
           {
             "id": "bt_grid_AC_frequency",
             "par": "AC Output Frequency",
-            "val": "50.2",
+            "val": "49.7",
             "unit": "Hz"
           },
           {
             "id": "bt_ac_output_apparent_power",
             "par": "AC Output Apparent Power",
-            "val": "428",
+            "val": "425",
             "unit": "VA"
           },
           {
             "id": "bt_load_active_power_sole",
             "par": "AC Output Active Power",
-            "val": "323",
+            "val": "319",
             "unit": "W"
           },
           {
@@ -215,25 +215,25 @@
       {
         "par": "gd_vol",
         "name": "Grid Voltage",
-        "val": "237.9",
+        "val": "236.8",
         "unit": "V"
       },
       {
         "par": "gd_fre",
         "name": "Grid Frequency",
-        "val": "50.2",
+        "val": "49.7",
         "unit": "Hz"
       },
       {
         "par": "bc_vol",
         "name": "AC Output Voltage",
-        "val": "237.9",
+        "val": "236.8",
         "unit": "V"
       },
       {
         "par": "bc_pow",
         "name": "AC Output Active Power",
-        "val": "323",
+        "val": "319",
         "unit": "W"
       },
       {
@@ -251,7 +251,7 @@
       {
         "par": "bt_vol",
         "name": "Battery Voltage",
-        "val": "27.1",
+        "val": "27.0",
         "unit": "V"
       },
       {
