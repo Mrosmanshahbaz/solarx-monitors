@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-11 04:22:17",
+  "updated_at": "2026-08-11 04:23:24",
   "mode_title": "Model",
   "mode_value": "Line Mode",
   "battery_title": "Battery Capacity",
@@ -17,7 +17,7 @@
     "Main CPU Firmware Version": "00047.03",
     "Secondary CPU Firmware Version": "00019.20",
     "PV1 Input Current": "0 A",
-    "Grid Voltage": "241.5 V",
+    "Grid Voltage": "241.9 V",
     "Grid Frequency": "49.9 Hz",
     "PV1 Input Voltage": "0.0 V",
     "PV1 Charging Power": "0 W",
@@ -25,7 +25,7 @@
     "Battery Capacity": "100 %",
     "Battery Charging Current": "0 A",
     "Battery Discharge Current": "0 A",
-    "AC Output Voltage": "241.5 V",
+    "AC Output Voltage": "241.9 V",
     "AC Output Frequency": "49.9 Hz",
     "AC Output Apparent Power": "0 VA",
     "AC Output Active Power": "0 W",
@@ -35,7 +35,7 @@
   },
   "debug_raw": {
     "snapshot": {
-      "gts": "1786411028405",
+      "gts": "1786411321543",
       "pars": {
         "gd_": [
           {
@@ -116,7 +116,7 @@
           {
             "id": "bt_grid_voltage",
             "par": "Grid Voltage",
-            "val": "241.5",
+            "val": "241.9",
             "unit": "V"
           },
           {
@@ -164,7 +164,7 @@
           {
             "id": "bt_ac_output_voltage",
             "par": "AC Output Voltage",
-            "val": "241.5",
+            "val": "241.9",
             "unit": "V"
           },
           {
@@ -215,7 +215,7 @@
       {
         "par": "gd_vol",
         "name": "Grid Voltage",
-        "val": "241.5",
+        "val": "241.9",
         "unit": "V"
       },
       {
@@ -227,7 +227,7 @@
       {
         "par": "bc_vol",
         "name": "AC Output Voltage",
-        "val": "241.5",
+        "val": "241.9",
         "unit": "V"
       },
       {
