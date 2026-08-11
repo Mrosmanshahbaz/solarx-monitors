@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Run monitor
         env:
           SM_USER: ${{ secrets.SM_USER }}
@@ -26,6 +29,10 @@ jobs:
           SM_PN: ${{ secrets.SM_PN }}
           SM_SN: ${{ secrets.SM_SN }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TUYA_ACCESS_ID: ${{ secrets.TUYA_ACCESS_ID }}
+          TUYA_ACCESS_SECRET: ${{ secrets.TUYA_ACCESS_SECRET }}
+          TUYA_DEVICE_ID: ${{ secrets.TUYA_DEVICE_ID }}
+          TUYA_ENDPOINT: ${{ secrets.TUYA_ENDPOINT }}
         run: python monitor.py
 
       - name: Commit updated status.json
