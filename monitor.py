@@ -128,14 +128,16 @@ def send_ntfy(topic: str, title: str, message: str, priority: str = "high"):
         url,
         data=message.encode("utf-8"),
         headers={
-            "Title": title.encode("utf-8"),
+            "Title": title,
             "Priority": priority,
             "Tags": "zap",
+            "Content-Type": "text/plain; charset=utf-8",
         },
         method="POST",
     )
     try:
-        urllib.request.urlopen(req, timeout=15)
+        resp = urllib.request.urlopen(req, timeout=15)
+        print(f"ntfy response: {resp.status}")
     except Exception as e:
         print(f"ntfy send failed: {e}", file=sys.stderr)
 
